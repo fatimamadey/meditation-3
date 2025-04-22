@@ -1,0 +1,68 @@
+<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
+<script>
+  /* global nn */
+
+  
+  // const GIF = 'raining.gif'
+  // const GIF = 'rain2.gif'
+  // const GIF = 'lightning.gif'
+  // const GIF = 'pinkcloud.gif'
+  // const GIF = 'rainwithcloud.gif'
+  const GIF = 'tulips.gif'
+  const COLOR = 'mistyrose'
+  
+  function createGif (x, y, w, h, url) {
+    nn.create('img')
+      .set({ src: `${url}#${Math.random()}` })
+      .css({
+        position: 'absolute',
+        width: w,
+        height: h,
+        left: x - w / 2,
+        top: y - h / 2,
+        // imageRendering: 'pixelated'
+      })
+      .addTo('body')
+  }
+  
+  //  async function createGifCircle (num, scale, radius, url) {
+  //   const gif = await nn.loadImage(url)
+  //   for (let i = 0; i < num; i++) {
+  //     const cx = nn.width / 2
+  //     const cy = nn.height / 2
+  //     const x = cx + Math.sin(i * scale) * radius
+  //     const y = cy + Math.cos(i * scale) * radius
+  //     createGif(x, y, gif.width, gif.height, url)
+  //   }
+  // }
+  
+  async function setup () {
+    nn.get('body').css({
+      backgroundColor: COLOR,
+      overflow: 'hidden'
+    })
+    
+    const gif = await nn.loadImage(GIF)
+    
+    const colSize = gif.width / 2
+    const numColumns = nn.width / colSize
+    
+    const rowSize = gif.height / 2
+    const numRows = (nn.height / rowSize)
+    
+    for (let r = 0; r < numRows; r++) {
+      for (let c = 0; c < numColumns; c++) {
+        const x = c * colSize
+        const y = r * rowSize
+        createGif(x, y, gif.width, gif.height, GIF)
+      }
+    }
+    // createGifCircle(22, 0.3, 100, GIF)
+    // createGifCircle(22, 0.3, 150, GIF)
+    // createGifCircle(22, 0.3, 200, GIF)
+  }
+  
+  
+  nn.on('load', setup)
+  
+</script>
